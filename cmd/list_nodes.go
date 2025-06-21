@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -55,13 +54,13 @@ func init() {
 }
 
 func (node *Node) GetAllNodes() {
-	fmt.Println("GetAllNodes")
+	log.Warn().Msg("TODO GetAllNodes")
 }
 
 func (node *Node) GetControlPlaneNodes() {
-	fmt.Println("GetControlPlaneNodes")
+	log.Warn().Msg("TODO GetControlPlaneNodes")
 }
 
 func (node *Node) GetDataPlaneNodes() {
-	fmt.Println("GetDataPlaneNodes")
+	log.Warn().Msg("TODO GetDataPlaneNodes")
 }

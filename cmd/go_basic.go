@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -44,7 +43,7 @@ type Kubernetes struct {
 
 func (k8s Kubernetes) GetUsers() {
 	for _, user := range k8s.Users {
-		fmt.Println(user)
+		log.Info().Str("get user", user).Msg("ok")
 	}
 }
 
