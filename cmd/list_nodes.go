@@ -29,7 +29,7 @@ const (
 
 var fetchListOfNodesCmd = &cobra.Command{
 	Use:   "list-nodes",
-	Short: "Fetch list of nodes",
+	Short: "List cluster nodes",
 	Run: func(cmd *cobra.Command, args []string) {
 		node := Node{
 			Name:    "dev-control-plane",
