@@ -1,10 +1,10 @@
-# kubernetes-control-plane
+# kubernetes controller
 
 <div align="center">
   <p><em>Build your own Kubernetes controller from scratch</em></p>
 </div>
 
-## Overview
+# Overview
 This project helps you understand Kubernetes controller concept by providing step-by-step instructions on how to build a Kubernetes controller from scratch. 
 
 It's perfect for developers who want to:
@@ -18,3 +18,12 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 
 ## Prerequisites
 - Basic understanding of Kubernetes concepts
+
+---
+
+## Steps
+- [ ] [Cobra CLI](docs/cobra-cli/README.md)
+- [ ] [Zerolog logging]()
+- [ ] [Pflag, implementing POSIX/GNU-style --flags]()
+- [ ] [Fast HTTP]()
+- [ ] [Makefile, CI]()
