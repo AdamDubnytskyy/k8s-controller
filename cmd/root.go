@@ -1,16 +1,21 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"fmt"
 	"os"
+	"strings"
 
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	flag "github.com/spf13/pflag"
 )
 
-
+var logLevel string
+var flagvar string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -22,13 +27,69 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("cluster_name has value ", flagvar)
+		level := parseLogLevel(logLevel)
+		log.Info().Msg("Configure logger level")
+		configureLogger(level)
+
+		log.Debug().Msg("This is a debug log")
+		log.Trace().Msg("This is a trace log")
+		log.Warn().Msg("This is a warn log")
+		log.Error().Msg("This is an error log")
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
+func parseLogLevel(lvl string) zerolog.Level {
+	switch strings.ToLower(lvl) {
+	case "trace":
+		return zerolog.TraceLevel
+	case "debug":
+		return zerolog.DebugLevel
+	case "info":
+		return zerolog.InfoLevel
+	case "warn":
+		return zerolog.WarnLevel
+	case "error":
+		return zerolog.ErrorLevel
+	default:
+		return zerolog.InfoLevel
+	}
+}
+
+func configureLogger(level zerolog.Level) {
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnixMs
+	zerolog.SetGlobalLevel(level)
+	if level == zerolog.TraceLevel {
+		zerolog.CallerMarshalFunc = func(pc uintptr, file string, line int) string {
+			return fmt.Sprintf("%s:%d", file, line)
+		}
+		zerolog.CallerFieldName = "caller"
+		log.Logger = log.Output(zerolog.ConsoleWriter{
+			Out:        os.Stderr,
+			TimeFormat: "2006-01-02 15:04:05.000",
+			PartsOrder: []string{
+				zerolog.TimestampFieldName,
+				zerolog.LevelFieldName,
+				zerolog.CallerFieldName,
+				zerolog.MessageFieldName,
+			},
+		}).With().Caller().Logger()
+	} else if level == zerolog.DebugLevel {
+		log.Logger = log.Output(zerolog.ConsoleWriter{
+			Out:        os.Stderr,
+			TimeFormat: "2006-01-02 15:04:05.000",
+			PartsOrder: []string{
+				zerolog.TimestampFieldName,
+				zerolog.LevelFieldName,
+				zerolog.MessageFieldName,
+			},
+		})
+	} else {
+		log.Logger = log.Output(os.Stderr)
+	}
+}
+
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -37,15 +98,8 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.k8s-controller.git.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	flag.StringVar(&flagvar, "cluster-name", "dev", "Flag to pass cluster name")
+	flag.StringVar(&logLevel, "log-level", "info", "Log level flag")
+	flag.Parse()
+	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "info", "Set log level: trace, debug, info, warn, error")
 }
-
-
