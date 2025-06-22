@@ -32,9 +32,13 @@ var serverCmd = &cobra.Command{
 func requestHandler(ctx *fasthttp.RequestCtx) {
 	fmt.Fprintf(ctx, "FastHTTP server is up & running")
 
-	fmt.Fprintf(ctx, "Request method is %q\n", ctx.Method())
-	fmt.Fprintf(ctx, "Connection has been established at %s\n", ctx.ConnTime())
-	fmt.Fprintf(ctx, "Your ip is %q\n\n", ctx.RemoteIP())
+	log.Info().
+		Str("Method", string(ctx.Method())).
+		Str("Request URI", string(ctx.RequestURI())).
+		Str("Query string", ctx.QueryArgs().String()).
+		Str("Headers", string(ctx.Request.Header.Header())).
+		Msg("Inbound HTTP request")
+
 	ctx.SetContentType("application/json; charset=utf8")
 
 	// Set arbitrary headers
