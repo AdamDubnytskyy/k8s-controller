@@ -24,6 +24,6 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 ## Steps
 - [x] [Cobra CLI](docs/cobra-cli/README.md)
 - [x] [Zerolog logging](docs/zerolog-logging/README.md)
-- [ ] [Pflag, implementing POSIX/GNU-style --flags]()
+- [x] [Pflag, implementing POSIX/GNU-style --flags]()
 - [ ] [Fast HTTP]()
 - [ ] [Makefile, CI]()
