@@ -10,26 +10,28 @@ import (
 )
 
 /*
-	Init sets Global logging level
-	You can set the Global logging level to any of these options using the SetGlobalLevel function in the zerolog package, 
-	passing in one of the given constants above, e.g. zerolog.InfoLevel would be the "info" level.
+Init sets Global logging level
+You can set the Global logging level to any of these options using the SetGlobalLevel function in the zerolog package,
+passing in one of the given constants above, e.g. zerolog.InfoLevel would be the "info" level.
 */
 func Init(level string) {
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr)}
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
-	switch strings.ToLower(lvl) {
-	case "trace":
-		return zerolog.TraceLevel
+	switch strings.ToLower(level) {
 	case "debug":
-		return zerolog.DebugLevel
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	case "info":
-		return zerolog.InfoLevel
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	case "warn":
-		return zerolog.WarnLevel
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
 	case "error":
-		return zerolog.ErrorLevel
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	case "fatal":
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	case "panic":
+		zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	default:
-		return zerolog.InfoLevel
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	log.Debug().Str("Logging level", level).Msg("Logger initialized")
