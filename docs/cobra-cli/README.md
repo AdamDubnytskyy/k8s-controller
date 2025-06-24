@@ -1,4 +1,4 @@
-## Step 1: Cobra CLI
+## Cobra CLI
 
 A starter template for building Kubernetes controllers or CLI tools in Go using [cobra-cli](https://github.com/spf13/cobra-cli).
 

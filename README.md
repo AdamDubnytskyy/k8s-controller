@@ -14,7 +14,9 @@ It's perfect for developers who want to:
 Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https://github.com/Alex0M)
 
 ## Features
-- A starter template for building Kubernetes controllers or CLI tools in Go using cobra-cli.
+- A starter template for building Kubernetes controllers or CLI tools in Go using [cobra-cli](docs/cobra-cli/README.md).
+- [Zerolog logging](docs/zerolog-logging/README.md)
+- POSIX/GNU-style --flags with [Pflag](docs/pflag/README.md)
 
 ## Prerequisites
 - Basic understanding of Kubernetes concepts
@@ -24,7 +26,7 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 ## Steps
 - [x] [Cobra CLI](docs/cobra-cli/README.md)
 - [x] [Zerolog logging](docs/zerolog-logging/README.md)
-- [x] [Pflag, implementing POSIX/GNU-style --flags]()
+- [x] [Pflag, implementing POSIX/GNU-style --flags](docs/pflag/README.md)
 - [x] [Fast HTTP](docs/fast-http-server/README.md)
 - [x] [Makefile, CI](docs/ci/README.md)
 - [x] [kubernetes/client-go](docs/go-client/README.md)
