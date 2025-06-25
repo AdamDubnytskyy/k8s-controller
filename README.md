@@ -30,7 +30,7 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 - [x] [Fast HTTP](docs/fast-http-server/README.md)
 - [x] [Makefile, CI](docs/ci/README.md)
 - [x] [kubernetes/client-go](docs/go-client/README.md)
-- [ ] [Informer]()
+- [x] [Informer](docs/informer/README.md)
 - [ ] [API handler]()
 - [ ] [sigs.k8s.io/controller-runtime]()
 - [ ] [Leader election]()
