@@ -13,22 +13,22 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
-const resyncTime = 30*time.Second
+const resyncTime = 30 * time.Second
 
-func StartDeploymentInformer(ctx context.Context, clientset *kubernetes.Clientset, namespace) {
+func StartDeploymentInformer(ctx context.Context, clientset *kubernetes.Clientset, namespace string) {
 	factory := informers.NewSharedInformerFactoryWithOptions(
 		clientset,
 		resyncTime,
 		informers.WithNamespace(namespace),
 		informers.WithTweakListOptions(func(options *metav1.ListOptions) {
-			options.FieldSelector = field.Everything().String()
+			options.FieldSelector = fields.Everything().String()
 		}),
 	)
 	informer := factory.Apps().V1().Deployments().Informer()
 
 	informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-		AddFunc: func(oldObj, newObj, interface{}) {
-			log.Info().Msg("Deployment added: %s", getDeploymentName(obj))
+		AddFunc: func(obj interface{}) {
+			log.Info().Msgf("Deployment added: %s", getDeploymentName(obj))
 		},
 		UpdateFunc: func(oldObj, newObj interface{}) {
 			log.Info().Msgf("Deployment updated: %s", getDeploymentName(newObj))
