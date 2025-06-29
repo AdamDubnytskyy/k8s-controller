@@ -24,13 +24,13 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 ---
 
 ## Steps
-- [x] [Cobra CLI](docs/cobra-cli/README.md)
-- [x] [Zerolog logging](docs/zerolog-logging/README.md)
-- [x] [Pflag, implementing POSIX/GNU-style --flags](docs/pflag/README.md)
-- [x] [Fast HTTP](docs/fast-http-server/README.md)
-- [x] [Makefile, CI](docs/ci/README.md)
-- [x] [kubernetes/client-go](docs/go-client/README.md)
-- [x] [Informer](docs/informer/README.md)
-- [ ] [API handler]()
-- [ ] [sigs.k8s.io/controller-runtime]()
-- [ ] [Leader election]()
+1. [Cobra CLI](docs/cobra-cli/README.md) ✅
+2. [Zerolog logging](docs/zerolog-logging/README.md) ✅
+3. [Pflag, implementing POSIX/GNU-style --flags](docs/pflag/README.md) ✅
+4. [Fast HTTP](docs/fast-http-server/README.md) ✅
+5. [Makefile, CI](docs/ci/README.md) ✅
+6. [kubernetes/client-go](docs/go-client/README.md) ✅
+7. [Informer](docs/informer/README.md) ✅
+8. [API handler]()
+9. [sigs.k8s.io/controller-runtime]()
+10. [Leader election]()
