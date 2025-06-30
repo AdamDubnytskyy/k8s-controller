@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    tags:
+      - 'v*.*.*'
     branches: ["main", "feature/**"]
     paths:
       - '**.go'
@@ -12,8 +14,9 @@ on:
       - '.github/workflows/ci.yml'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-24.04
+    if: github.ref_type == 'tag'
     steps:
       - uses: actions/checkout@v4
       - name: Set up Go
@@ -46,14 +49,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.K8S_CONTROLLER_TOKEN }}
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.docker_tag }} .
+        run: docker build -t ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.app_version }} .
       - name: Trivy Scan
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'image'
-          scan-ref: ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.docker_tag }}
+          scan-ref: ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.app_version }}
           format: table
           severity: HIGH,CRITICAL
           exit-code: 1
       - name: Publish Docker image
-        run: docker push ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.docker_tag }}
+        run: docker push ghcr.io/${{ steps.vars.outputs.owner_lc }}/app:${{ steps.vars.outputs.app_version }}
