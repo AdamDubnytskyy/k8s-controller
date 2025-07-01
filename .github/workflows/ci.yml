@@ -14,8 +14,9 @@ on:
       - '.github/workflows/ci.yml'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-24.04
+    if: github.ref_type == 'tag'
     steps:
       - uses: actions/checkout@v4
       - name: Set up Go
