@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/AdamDubnytskyy/k8s-controller/pkg/informer"
 	"github.com/rs/zerolog/log"
@@ -18,6 +19,8 @@ var (
 	serverPort       int
 	serverKubeconfig string
 	serverInCluster  bool
+	labelSelectors   []string
+	labelSelector    string
 )
 
 var serverCmd = &cobra.Command{
@@ -30,7 +33,8 @@ var serverCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		ctx := context.Background()
-		go informer.StartDeploymentInformer(ctx, clientset, namespace)
+		labelSelector := strings.Join(labelSelectors, ",")
+		go informer.StartDeploymentInformer(ctx, clientset, namespace, labelSelector)
 
 		handler := requestHandler
 		addr := fmt.Sprintf(":%d", serverPort)
@@ -59,7 +63,28 @@ func getServerKubeClient(kubeconfigPath string, inCluster bool) (*kubernetes.Cli
 }
 
 func requestHandler(ctx *fasthttp.RequestCtx) {
-	fmt.Fprintf(ctx, "FastHTTP server is up & running")
+	switch string(ctx.Path()) {
+	case "/deployments":
+		log.Info().Msg("Deployments request received")
+		ctx.Response.Header.Set("Content-Type", "application/json")
+		deployments := informer.GetDeploymentNames(namespace)
+		log.Info().Msgf("Deployments: %v", deployments)
+		// ctx.SetStatusCode(200)
+		ctx.Write([]byte("["))
+		for i, name := range deployments {
+			ctx.WriteString("\"")
+			ctx.WriteString(name)
+			ctx.WriteString("\"")
+			if i < len(deployments)-1 {
+				ctx.WriteString(",")
+			}
+		}
+		ctx.Write([]byte("]"))
+		return
+	default:
+		log.Info().Msg("Default request received")
+		fmt.Fprintf(ctx, "Hello from FastHTTP!")
+	}
 
 	log.Info().
 		Str("Method", string(ctx.Method())).
@@ -69,10 +94,6 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 		Msg("Inbound HTTP request")
 
 	ctx.SetContentType("application/json; charset=utf8")
-
-	// Set arbitrary headers
-	ctx.Response.Header.Set("X-My-Header", "my-header-value")
-
 }
 
 func init() {
@@ -81,4 +102,5 @@ func init() {
 	serverCmd.Flags().StringVar(&serverKubeconfig, "kubeconfig", "", "Path to the kubeconfig file")
 	serverCmd.Flags().BoolVar(&serverInCluster, "in-cluster", false, "Use in-cluster Kubernetes config")
 	serverCmd.Flags().StringVar(&namespace, "namespace", "", "Specify kubernetes namespace")
+	serverCmd.Flags().StringSliceVar(&labelSelectors, "labelSelectors", []string{}, "Specify kubernetes label selectors. E.g.: labelName=labelValue")
 }
