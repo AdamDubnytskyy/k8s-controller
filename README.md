@@ -21,6 +21,11 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 ## Prerequisites
 - Basic understanding of Kubernetes concepts
 
+## CI
+To setup GitHub Actions workflow follow steps described below:
+1. Generate PAT (personal access token). Select listed scopes: write:packages, repo. Copy secret.
+2. Go to `Settings` tab of your repository, choose `Security` section and select `Actions`. Create a `New repository secret` with name `K8S_CONTROLLER_TOKEN`, paste secret copied generated on step 1.
+
 ---
 
 ## Steps
