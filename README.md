@@ -36,6 +36,6 @@ To setup GitHub Actions workflow follow steps described below:
 5. [Makefile, CI](docs/ci/README.md) ✅
 6. [kubernetes/client-go](docs/go-client/README.md) ✅
 7. [Informer](docs/informer/README.md) ✅
-8. [API handler]()
+8. [API handler](docs/api-handler/README.md) ✅
 9. [sigs.k8s.io/controller-runtime]()
 10. [Leader election]()
