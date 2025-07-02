@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/AdamDubnytskyy/k8s-controller/pkg/ctrl"
 	"github.com/AdamDubnytskyy/k8s-controller/pkg/informer"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -13,6 +14,8 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	ctrlruntime "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
 var (
@@ -35,6 +38,23 @@ var serverCmd = &cobra.Command{
 		ctx := context.Background()
 		labelSelector := strings.Join(labelSelectors, ",")
 		go informer.StartDeploymentInformer(ctx, clientset, namespace, labelSelector)
+
+		mgr, err := ctrlruntime.NewManager(ctrlruntime.GetConfigOrDie(), manager.Options{})
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to create controller-runtime manager")
+			os.Exit(1)
+		}
+		if err := ctrl.AddDeploymentController(mgr); err != nil {
+			log.Error().Err(err).Msg("Failed to add deployment controller")
+			os.Exit(1)
+		}
+		go func() {
+			log.Info().Msg("Starting controller-runtime manager...")
+			if err := mgr.Start(cmd.Context()); err != nil {
+				log.Error().Err(err).Msg("Manager exited with error")
+				os.Exit(1)
+			}
+		}()
 
 		handler := requestHandler
 		addr := fmt.Sprintf(":%d", serverPort)

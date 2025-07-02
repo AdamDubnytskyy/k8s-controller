@@ -20,6 +20,7 @@ Authors: [Den Vasyliev](https://github.com/den-vasyliev) and [Alex Sudom](https:
 
 ## Prerequisites
 - Basic understanding of Kubernetes concepts
+- [up & running control-plane](docs/control-plane/README.md)
 
 ## CI
 To setup GitHub Actions workflow follow steps described below:
