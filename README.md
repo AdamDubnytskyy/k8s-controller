@@ -1,8 +1,4 @@
-# kubernetes controller
-
-<div align="center">
-  <p><em>Build your own Kubernetes controller from scratch</em></p>
-</div>
+# Kubernetes controller
 
 # Overview
 This project helps you understand Kubernetes controller concept by providing step-by-step instructions on how to build a Kubernetes controller from scratch. 
