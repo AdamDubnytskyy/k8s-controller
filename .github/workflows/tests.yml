@@ -67,10 +67,10 @@ jobs:
       - name: Run go test
         run: |
           if [ -n "${{ matrix.update-coverage }}" ]; then
-            script/test.sh -race -covermode atomic -coverprofile coverage.txt ./...
+            make test
             exit
           fi
-          script/test.sh -race -covermode atomic ./...
+          make test
 
       - name: Ensure integration tests build
         # don't actually run tests since they hit live GitHub API
