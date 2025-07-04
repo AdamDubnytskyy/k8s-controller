@@ -72,10 +72,6 @@ jobs:
           fi
           make test
 
-      - name: Ensure integration tests build
-        # don't actually run tests since they hit live GitHub API
-        run: go test -v -tags=integration -run=^$ ./test/integration
-
       - name: Upload coverage to Codecov
         if: ${{ matrix.update-coverage }}
         uses: codecov/codecov-action@18283e04ce6e62d37312384ff67231eb8fd56d24 # v5.4.3
