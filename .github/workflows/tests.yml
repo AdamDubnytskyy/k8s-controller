@@ -5,10 +5,11 @@ concurrency:
 on:
   push:
     branches:
-      - master
+      - main
+      - feature/*
   pull_request:
     branches:
-      - master
+      - main
     types: [opened]
 
 name: testing
