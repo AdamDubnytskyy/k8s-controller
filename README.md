@@ -35,4 +35,5 @@ To setup GitHub Actions workflow follow steps described below:
 7. [Informer](docs/informer/README.md) ✅
 8. [API handler](docs/api-handler/README.md) ✅
 9. [controller-runtime](docs/controller-runtime/README.md) ✅
-10. [Leader election]()
+10. [Leader election](docs/leader-election/README.md) ✅
+11. [FrontendPage CRD and Advanced Controller Implementation]()
