@@ -11,7 +11,7 @@ on:
       - master
     types: [opened]
 
-name: tests
+name: testing
 env:
   GO111MODULE: on
 
