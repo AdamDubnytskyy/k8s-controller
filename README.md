@@ -2,7 +2,7 @@
 
 ![k8s-controller release (latest SemVer)](https://img.shields.io/github/v/tag/AdamDubnytskyy/k8s-controller?sort=semver)
 [![Go Reference](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/AdamDubnytskyy/k8s-controller)
-[![Test Status](https://github.com/AdamDubnytskyy/k8s-controller/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/AdamDubnytskyy/k8s-controller/actions/workflows/tests.yml)
+[![Test Status](https://github.com/AdamDubnytskyy/k8s-controller/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/AdamDubnytskyy/k8s-controller/actions/workflows/tests.yml)
 
 # Overview
 This project helps you understand Kubernetes controller concept by providing step-by-step instructions on how to build a Kubernetes controller from scratch. 
