@@ -16,14 +16,17 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	ctrlruntime "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 )
 
 var (
-	serverPort       int
-	serverKubeconfig string
-	serverInCluster  bool
-	labelSelectors   []string
-	labelSelector    string
+	serverPort              int
+	serverKubeconfig        string
+	serverInCluster         bool
+	enableLeaderElection    bool
+	leaderElectionNamespace string
+	metricsPort             int
+	labelSelectors          []string
 )
 
 var serverCmd = &cobra.Command{
@@ -39,7 +42,12 @@ var serverCmd = &cobra.Command{
 		labelSelector := strings.Join(labelSelectors, ",")
 		go informer.StartDeploymentInformer(ctx, clientset, namespace, labelSelector)
 
-		mgr, err := ctrlruntime.NewManager(ctrlruntime.GetConfigOrDie(), manager.Options{})
+		mgr, err := ctrlruntime.NewManager(ctrlruntime.GetConfigOrDie(), manager.Options{
+			LeaderElection:          enableLeaderElection,
+			LeaderElectionID:        "k8s-controller-tutorial-leader-election",
+			LeaderElectionNamespace: leaderElectionNamespace,
+			Metrics:                 server.Options{BindAddress: fmt.Sprintf(":%d", metricsPort)},
+		})
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to create controller-runtime manager")
 			os.Exit(1)
@@ -121,6 +129,9 @@ func init() {
 	serverCmd.Flags().IntVar(&serverPort, "port", 8080, "Server port")
 	serverCmd.Flags().StringVar(&serverKubeconfig, "kubeconfig", "", "Path to the kubeconfig file")
 	serverCmd.Flags().BoolVar(&serverInCluster, "in-cluster", false, "Use in-cluster Kubernetes config")
+	serverCmd.Flags().BoolVar(&enableLeaderElection, "enable-leader-election", true, "Enable leader election for controller manager")
+	serverCmd.Flags().StringVar(&leaderElectionNamespace, "leader-election-namespace", "default", "Namespace for leader election")
+	serverCmd.Flags().IntVar(&metricsPort, "metrics-port", 8081, "Port for controller manager metrics")
 	serverCmd.Flags().StringVar(&namespace, "namespace", "", "Specify kubernetes namespace")
 	serverCmd.Flags().StringSliceVar(&labelSelectors, "labelSelectors", []string{}, "Specify kubernetes label selectors. E.g.: labelName=labelValue")
 }
