@@ -1,6 +1,6 @@
 {
   "name": "k8s-controller",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Kubernetes controller written in Go",
   "scripts": {
     "publish": "git push --follow-tags"
